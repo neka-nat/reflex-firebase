@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "reflex-firebase"
+version = "0.0.1"
+description = ""
+authors = ["neka-nat <nekanat.stock@gmail.com>"]
+license = "MIT"
+packages = [
+    { include = "reflex_firebase", from = "custom_components" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+reflex = "^0.5.5"
+python-dotenv = "^1.0.1"
+pyrebase4 = "^4.8.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reflex-firebase"
+version = "0.0.1"
+description = "Reflex custom component firebase"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9,<4.0"
+authors = [{ name = "", email = "YOUREMAIL@domain.com" }]
+keywords = ["reflex","reflex-custom-components"]
+
+dependencies = ["reflex>=0.4.2"]
+
+classifiers = ["Development Status :: 4 - Beta"]
+
+[project.urls]
+
+[project.optional-dependencies]
+dev = ["build", "twine"]
+
+[tool.setuptools.packages.find]
+where = ["custom_components"]

@@ -1,0 +1,7 @@
+*.egg-info/
+*.py[cod]
+/Cargo.lock
+/target
+__pycache__/
+dist/
+.env
