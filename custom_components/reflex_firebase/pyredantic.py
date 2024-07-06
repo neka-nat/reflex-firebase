@@ -11,7 +11,7 @@ class PyrebaseModel(BaseModel):
     def save(self, id: str) -> str:
         data = self.model_dump(by_alias=True)
         res = db.child(self.__key__).child(id).set(data)
-        return res["name"]
+        return res
 
     @classmethod
     def get(cls, id: str) -> "PyrebaseModel":

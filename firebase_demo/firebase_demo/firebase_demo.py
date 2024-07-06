@@ -1,4 +1,5 @@
 """Welcome to Reflex! This file showcases the custom component in a basic app."""
+from typing import ClassVar
 
 from rxconfig import config
 
@@ -7,11 +8,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from reflex_firebase import db, signup_form, login_form, AuthState, PyrebaseModel
+from reflex_firebase import signup_form, login_form, AuthState, PyrebaseModel
 
 
 class User(PyrebaseModel):
-    __key__: str = "users"
+    __key__: ClassVar[str] = "users"
     email: str
 
 
@@ -21,7 +22,7 @@ class State(AuthState):
     async def login(self, form_data: dict[str, str]):
         auth_state = await self.get_state(AuthState)
         auth_state.login(form_data)
-        print(self.user)
+        User(email=auth_state.user["email"]).save(auth_state.user["localId"])
 
 
 def signup() -> rx.Component:

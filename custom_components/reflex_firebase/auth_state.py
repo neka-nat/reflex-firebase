@@ -36,6 +36,13 @@ class AuthState(rx.State):
         self.user_json = "null"
         self.error_message = ""
 
+    def refresh(self):
+        if self.is_logged_in:
+            user = auth.refresh(self.user["refreshToken"])
+            self.user_json = json.dumps(user)
+        else:
+            self.user_json = "null"
+
     @rx.var
     def user(self):
         return json.loads(self.user_json)
