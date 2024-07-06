@@ -7,13 +7,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from reflex_firebase import signup_form, login_form, AuthState
+from reflex_firebase import db, signup_form, login_form, AuthState, PyrebaseModel
 
 
-class State(rx.State):
+class User(PyrebaseModel):
+    __key__: str = "users"
+    email: str
+
+
+class State(AuthState):
     """The app state."""
 
-    pass
+    async def login(self, form_data: dict[str, str]):
+        auth_state = await self.get_state(AuthState)
+        auth_state.login(form_data)
+        print(self.user)
 
 
 def signup() -> rx.Component:
@@ -26,12 +34,12 @@ def signup() -> rx.Component:
 def index() -> rx.Component:
     return rx.center(
         rx.cond(
-            AuthState.is_logged_in,
+            State.is_logged_in,
             rx.vstack(
                 rx.heading("You are logged in", size="1"),
-                rx.button("Logout", on_click=AuthState.logout),
+                rx.button("Logout", on_click=State.logout),
             ),
-            login_form(),
+            login_form(State),
         ),
         height="100vh",
     )

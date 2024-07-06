@@ -1,9 +1,12 @@
+from typing import Type
+
 import reflex as rx
 
 from .auth_state import AuthState
 
 
 def signup_form(
+    state_type: Type[AuthState] = AuthState,
     heading: rx.Component = rx.heading("Create an account", size="3"),
     width: str = "100%",
     spacing: str = "4",
@@ -35,18 +38,19 @@ def signup_form(
                     type="submit",
                 ),
                 rx.text(
-                    AuthState.error_message,
+                    state_type.error_message,
                     color="red",
                 ),
                 width=width,
                 spacing=spacing,
             ),
-            on_submit=AuthState.signup,
+            on_submit=state_type.signup,
         )
     )
 
 
 def login_form(
+    state_type: Type[AuthState] = AuthState,
     heading: rx.Component = rx.heading("Login", size="3"),
     width: str = "100%",
     spacing: str = "4",
@@ -71,7 +75,7 @@ def login_form(
                     type="submit",
                 ),
                 rx.text(
-                    AuthState.error_message,
+                    state_type.error_message,
                     color="red",
                 ),
                 rx.cond(
@@ -91,6 +95,6 @@ def login_form(
                 width=width,
                 spacing=spacing,
             ),
-            on_submit=AuthState.login,
+            on_submit=state_type.login,
         )
     )
