@@ -22,7 +22,8 @@ class State(AuthState):
     async def login(self, form_data: dict[str, str]):
         auth_state = await self.get_state(AuthState)
         auth_state.login(form_data)
-        User(email=auth_state.user["email"]).save(auth_state.user["localId"])
+        if auth_state.is_logged_in:
+            User(email=auth_state.user["email"]).save(auth_state.user["localId"])
 
 
 def signup() -> rx.Component:

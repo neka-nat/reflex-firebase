@@ -21,3 +21,12 @@ cp .env.sample .env
 # FIREBASE_APP_ID=
 # FIREBASE_MEASUREMENT_ID=
 ```
+
+Run demo.
+
+```bash
+cd firebase_demo
+reflex run
+```
+
+![login_form](login_form.png)

@@ -11,6 +11,7 @@ def signup_form(
     width: str = "100%",
     spacing: str = "4",
     confirm: bool = True,
+    login_path: str = "/login",
 ):
     return rx.vstack(
         rx.form(
@@ -40,6 +41,13 @@ def signup_form(
                 rx.text(
                     state_type.error_message,
                     color="red",
+                ),
+                rx.cond(
+                    len(login_path) > 0,
+                    rx.button(
+                        "Already have an account?",
+                        on_click=rx.redirect(login_path),
+                    ),
                 ),
                 width=width,
                 spacing=spacing,
