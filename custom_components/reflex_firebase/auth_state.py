@@ -9,8 +9,18 @@ from .config import auth
 class AuthState(rx.State):
     error_message: str = ""
     user_json: str = rx.LocalStorage("null")
+    in_progress: bool = False
 
-    def login(self, form_data: dict[str, Any]):
+    @rx.background
+    async def login(self, form_data: dict[str, Any]):
+        async with self:
+            self.in_progress = True
+        async with self:
+            self.login_main(form_data)
+        async with self:
+            self.in_progress = False
+
+    def login_main(self, form_data: dict[str, Any]):
         try:
             user = auth.sign_in_with_email_and_password(form_data["email"], form_data["password"])
             self.user_json = json.dumps(user)
@@ -19,7 +29,16 @@ class AuthState(rx.State):
             error = json.loads(e.strerror)
             self.error_message = error["error"]["message"]
 
-    def signup(self, form_data: dict[str, Any]):
+    @rx.background
+    async def signup(self, form_data: dict[str, Any]):
+        async with self:
+            self.in_progress = True
+        async with self:
+            self.signup_main(form_data)
+        async with self:
+            self.in_progress = False
+
+    def signup_main(self, form_data: dict[str, Any]):
         try:
             if "confirm_password" in form_data and form_data["password"] != form_data["confirm_password"]:
                 raise ValueError("Passwords do not match")

@@ -35,6 +35,7 @@ def signup_form(
                     ),
                 ),
                 rx.button(
+                    rx.spinner(loading=state_type.in_progress),
                     "Sign Up",
                     type="submit",
                 ),
@@ -79,6 +80,7 @@ def login_form(
                     type="password",
                 ),
                 rx.button(
+                    rx.spinner(loading=state_type.in_progress),
                     "Login",
                     type="submit",
                 ),
