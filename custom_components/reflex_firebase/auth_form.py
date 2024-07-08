@@ -13,6 +13,7 @@ def signup_form(
     spacing: str = "4",
     confirm: bool = True,
     login_path: str = "/login",
+    error_message: str = "",
 ):
     return rx.vstack(
         rx.form(
@@ -52,9 +53,12 @@ def signup_form(
                     size=size,
                     width="100%",
                 ),
-                rx.text(
+                rx.cond(
                     state_type.error_message,
-                    color="red",
+                    rx.text(
+                        error_message or state_type.error_message,
+                        color="red",
+                    ),
                 ),
                 width=width,
                 spacing=spacing,
@@ -70,6 +74,7 @@ def signup_form(
                 width="100%",
             ),
         ),
+        on_mount=state_type.reset_error,
     )
 
 
@@ -81,6 +86,7 @@ def login_form(
     spacing: str = "4",
     reset_password_path: str = "",
     signup_path: str = "/signup",
+    error_message: str = "",
 ) -> rx.Component:
     return rx.vstack(
         rx.form(
@@ -109,9 +115,12 @@ def login_form(
                     size=size,
                     width="100%",
                 ),
-                rx.text(
+                rx.cond(
                     state_type.error_message,
-                    color="red",
+                    rx.text(
+                        error_message or state_type.error_message,
+                        color="red",
+                    ),
                 ),
                 width=width,
                 spacing=spacing,
@@ -136,4 +145,5 @@ def login_form(
                 width="100%",
             ),
         ),
+        on_mount=state_type.reset_error,
     )

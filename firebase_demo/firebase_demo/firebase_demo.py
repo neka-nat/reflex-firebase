@@ -34,10 +34,13 @@ class State(rx.State):
             self.error_message = auth_state.error_message
             self.in_progress = False
 
+    def reset_error(self):
+        self.error_message = ""
+
 
 def signup() -> rx.Component:
     return rx.center(
-        signup_form(login_path="/"),
+        signup_form(login_path="/", error_message="アカウントを作成できませんでした。"),
         height="100vh",
     )
 
@@ -50,7 +53,7 @@ def index() -> rx.Component:
                 rx.heading("You are logged in", size="1"),
                 rx.button("Logout", on_click=AuthState.logout),
             ),
-            login_form(State),
+            login_form(State, error_message="ログインできませんでした。"),
         ),
         height="100vh",
     )
