@@ -37,7 +37,7 @@ class State(rx.State):
 
 def signup() -> rx.Component:
     return rx.center(
-        signup_form(),
+        signup_form(login_path="/"),
         height="100vh",
     )
 
