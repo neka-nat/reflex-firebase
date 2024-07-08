@@ -70,5 +70,9 @@ class AuthState(rx.State):
     def is_logged_in(self):
         return self.user is not None
 
+    @rx.var
+    def email(self):
+        return self.user["email"] if self.user else ""
+
     def reset_error(self):
         self.error_message = ""
