@@ -7,7 +7,8 @@ from .config import auth
 
 
 class AuthState(rx.State):
-    error_message: str = ""
+    login_error_message: str = ""
+    signup_error_message: str = ""
     user_json: str = rx.LocalStorage("null")
     in_progress: bool = False
 
@@ -24,10 +25,10 @@ class AuthState(rx.State):
         try:
             user = auth.sign_in_with_email_and_password(form_data["email"], form_data["password"])
             self.user_json = json.dumps(user)
-            self.error_message = ""
+            self.login_error_message = ""
         except Exception as e:
             error = json.loads(e.strerror)
-            self.error_message = error["error"]["message"]
+            self.login_error_message = error["error"]["message"]
 
     @rx.background
     async def signup(self, form_data: dict[str, Any]):
@@ -44,16 +45,16 @@ class AuthState(rx.State):
                 raise ValueError("Passwords do not match")
             user = auth.create_user_with_email_and_password(form_data["email"], form_data["password"])
             self.user_json = json.dumps(user)
-            self.error_message = ""
+            self.signup_error_message = ""
         except ValueError as e:
-            self.error_message = str(e)
+            self.signup_error_message = str(e)
         except Exception as e:
             error = json.loads(e.strerror)
-            self.error_message = error["error"]["message"]
+            self.signup_error_message = error["error"]["message"]
 
     def logout(self):
         self.user_json = "null"
-        self.error_message = ""
+        self.login_error_message = ""
 
     def refresh(self):
         if self.is_logged_in:
@@ -74,5 +75,8 @@ class AuthState(rx.State):
     def email(self):
         return self.user["email"] if self.user else ""
 
-    def reset_error(self):
-        self.error_message = ""
+    def reset_login_error_message(self):
+        self.login_error_message = ""
+
+    def reset_signup_error_message(self):
+        self.signup_error_message = ""

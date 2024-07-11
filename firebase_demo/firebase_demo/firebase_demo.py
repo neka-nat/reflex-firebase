@@ -16,10 +16,8 @@ class User(PyrebaseModel):
     email: str
 
 
-class State(rx.State):
+class State(AuthState):
     """The app state."""
-    error_message: str = ""
-    in_progress: bool = False
 
     @rx.background
     async def login(self, form_data: dict[str, str]):
@@ -31,11 +29,7 @@ class State(rx.State):
         if auth_state.is_logged_in:
             User(email=auth_state.user["email"]).save(auth_state.user["localId"])
         async with self:
-            self.error_message = auth_state.error_message
             self.in_progress = False
-
-    def reset_error(self):
-        self.error_message = ""
 
 
 def signup() -> rx.Component:

@@ -54,9 +54,9 @@ def signup_form(
                     width="100%",
                 ),
                 rx.cond(
-                    state_type.error_message,
+                    state_type.signup_error_message,
                     rx.text(
-                        error_message or state_type.error_message,
+                        error_message or state_type.signup_error_message,
                         color="red",
                     ),
                 ),
@@ -74,7 +74,7 @@ def signup_form(
                 width="100%",
             ),
         ),
-        on_mount=state_type.reset_error,
+        on_mount=state_type.reset_signup_error_message,
     )
 
 
@@ -116,9 +116,9 @@ def login_form(
                     width="100%",
                 ),
                 rx.cond(
-                    state_type.error_message,
+                    state_type.login_error_message,
                     rx.text(
-                        error_message or state_type.error_message,
+                        error_message or state_type.login_error_message,
                         color="red",
                     ),
                 ),
@@ -149,5 +149,5 @@ def login_form(
                 width="100%",
             ),
         ),
-        on_mount=state_type.reset_error,
+        on_mount=state_type.reset_login_error_message,
     )
