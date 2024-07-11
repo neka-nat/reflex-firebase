@@ -129,10 +129,14 @@ def login_form(
         ),
         rx.cond(
             len(signup_path) > 0,
-            rx.button(
-                "Create an account",
-                on_click=rx.redirect(signup_path),
-                size=size,
+            rx.vstack(
+                rx.text("Or create an account", size=size),
+                rx.button(
+                    "Sign Up",
+                    on_click=rx.redirect(signup_path),
+                    size=size,
+                    width="100%",
+                ),
                 width="100%",
             ),
         ),
