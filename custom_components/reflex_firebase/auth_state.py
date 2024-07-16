@@ -10,6 +10,7 @@ class AuthState(rx.State):
     login_error_message: str = ""
     signup_error_message: str = ""
     user_json: str = rx.LocalStorage("null")
+    account_info: dict[str, Any] = {}
     in_progress: bool = False
 
     @rx.background
@@ -39,6 +40,17 @@ class AuthState(rx.State):
         async with self:
             self.in_progress = False
 
+    @rx.background
+    async def signup_and_send_email_verification(self, form_data: dict[str, Any]):
+        async with self:
+            self.in_progress = True
+        async with self:
+            self.signup_main(form_data)
+        if self.is_logged_in:
+            self.send_email_verification()
+        async with self:
+            self.in_progress = False
+
     def signup_main(self, form_data: dict[str, Any]):
         try:
             if "confirm_password" in form_data and form_data["password"] != form_data["confirm_password"]:
@@ -56,6 +68,9 @@ class AuthState(rx.State):
         self.user_json = "null"
         self.login_error_message = ""
 
+    def send_email_verification(self):
+        auth.send_email_verification(self.user["idToken"])
+
     def refresh(self):
         if self.is_logged_in:
             user = auth.refresh(self.user["refreshToken"])
@@ -63,16 +78,32 @@ class AuthState(rx.State):
         else:
             self.user_json = "null"
 
+    def get_account_info(self):
+        if not self.is_logged_in:
+            return
+        try:
+            self.account_info = auth.get_account_info(self.user["idToken"])
+        except Exception as e:
+            self.account_info = {}
+
     @rx.var
-    def user(self):
+    def user(self) -> dict[str, Any]:
         return json.loads(self.user_json)
 
     @rx.var
-    def is_logged_in(self):
+    def is_logged_in(self) -> bool:
         return self.user is not None
 
+    @rx.cached_var
+    def is_email_verified(self) -> bool:
+        if not self.is_logged_in:
+            return False
+        if not self.account_info:
+            self.get_account_info()
+        return self.account_info.get("emailVerified", False)
+
     @rx.var
-    def email(self):
+    def email(self) -> str:
         return self.user["email"] if self.user else ""
 
     def reset_login_error_message(self):

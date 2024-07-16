@@ -34,7 +34,7 @@ class State(AuthState):
 
 def signup() -> rx.Component:
     return rx.center(
-        signup_form(login_path="/", error_message="アカウントを作成できませんでした。"),
+        signup_form(login_path="/", error_message="アカウントを作成できませんでした。", email_validation=True),
         height="100vh",
     )
 
