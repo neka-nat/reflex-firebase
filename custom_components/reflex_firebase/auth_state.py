@@ -100,7 +100,9 @@ class AuthState(rx.State):
             return False
         if not self.account_info:
             self.get_account_info()
-        return self.account_info.get("emailVerified", False)
+        if "users" in self.account_info and self.account_info["users"]:
+            return self.account_info["users"][0].get("emailVerified", False)
+        return False
 
     @rx.var
     def email(self) -> str:

@@ -45,6 +45,11 @@ def index() -> rx.Component:
             AuthState.is_logged_in,
             rx.vstack(
                 rx.heading("You are logged in", size="1"),
+                rx.cond(
+                    AuthState.is_email_verified,
+                    rx.text("Your email is verified."),
+                    rx.text("Please verify your email."),
+                ),
                 rx.button("Logout", on_click=AuthState.logout),
             ),
             login_form(State, error_message="ログインできませんでした。"),

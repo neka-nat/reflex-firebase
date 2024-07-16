@@ -9,6 +9,7 @@ def notify_send_email_verification(
     state_type: Type[AuthState] = AuthState,
     size: str = "3",
     width: str = "100%",
+    login_path: str = "/login",
 ) -> rx.Component:
     return rx.vstack(
         rx.text(
@@ -24,7 +25,7 @@ def notify_send_email_verification(
         ),
         rx.button(
             "Continue to Login",
-            on_click=state_type.login,
+            on_click=rx.redirect(login_path),
             size=size,
             width=width,
         ),
@@ -103,7 +104,7 @@ def signup_form(
 ):
     return rx.cond(
         email_validation & state_type.is_logged_in & ~state_type.is_email_verified,
-        notify_send_email_verification(state_type=state_type, size=size, width=width),
+        notify_send_email_verification(state_type=state_type, size=size, width=width, login_path=login_path),
         rx.vstack(
             rx.cond(
                 email_validation,
