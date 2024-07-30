@@ -27,7 +27,7 @@ class State(AuthState):
             auth_state = await self.get_state(AuthState)
         auth_state.login_main(form_data)
         if auth_state.is_logged_in:
-            User(email=auth_state.user["email"]).save(auth_state.user["localId"])
+            User(email=auth_state.user["email"]).save(auth_state)
         async with self:
             self.in_progress = False
 
