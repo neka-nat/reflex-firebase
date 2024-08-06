@@ -21,5 +21,7 @@ class PyrebaseModel(BaseModel):
         if auth_state.is_logged_in:
             data = db.child(cls.__key__).child(auth_state.user["localId"]).get()
             data = data.val()
+            if not data:
+                return None
             return cls(**data)
         return None
