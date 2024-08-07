@@ -30,6 +30,8 @@ cd firebase_demo
 reflex run
 ```
 
+### Login form
 ![login_form](assets/login_form.png)
 
+### Todo demo
 ![demo](assets/todo_demo.gif)
