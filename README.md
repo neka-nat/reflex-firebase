@@ -11,6 +11,8 @@ pip install reflex-firebase
 ## Getting Started
 
 ```bash
+git clone https://github.com/neka-nat/reflex-firebase.git
+cd reflex-firebase
 cp .env.sample .env
 
 # FIREBASE_API_KEY=
@@ -27,6 +29,7 @@ Run demo.
 
 ```bash
 cd firebase_demo
+pip install -r requirements.txt
 reflex run
 ```
 
