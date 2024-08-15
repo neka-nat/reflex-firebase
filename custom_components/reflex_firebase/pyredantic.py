@@ -13,13 +13,13 @@ class PyrebaseModel(BaseModel):
         if not auth_state.is_logged_in:
             raise Exception("User is not logged in.")
         data = self.model_dump(by_alias=True)
-        res = db.child(self.__key__).child(auth_state.user["localId"]).set(data)
+        res = db.child(self.__key__).child(auth_state.user["localId"]).set(data, token=auth_state.user["idToken"])
         return res
 
     @classmethod
     def get(cls, auth_state: AuthState) -> "PyrebaseModel":
         if auth_state.is_logged_in:
-            data = db.child(cls.__key__).child(auth_state.user["localId"]).get()
+            data = db.child(cls.__key__).child(auth_state.user["localId"]).get(token=auth_state.user["idToken"])
             data = data.val()
             if not data:
                 return None
