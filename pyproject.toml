@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reflex-firebase"
-version = "0.0.10"
+version = "0.0.11"
 description = ""
 authors = ["neka-nat <nekanat.stock@gmail.com>"]
 license = "MIT"
@@ -24,7 +24,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reflex-firebase"
-version = "0.0.10"
+version = "0.0.11"
 description = "Reflex custom component firebase"
 readme = "README.md"
 license = { text = "Apache-2.0" }

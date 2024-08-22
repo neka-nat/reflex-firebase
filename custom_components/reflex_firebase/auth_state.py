@@ -74,7 +74,9 @@ class AuthState(rx.State):
     def refresh(self):
         if self.is_logged_in:
             user = auth.refresh(self.user["refreshToken"])
-            self.user_json = json.dumps(user)
+            curr_user = json.loads(self.user_json)
+            curr_user["idToken"] = user["idToken"]
+            self.user_json = json.dumps(curr_user)
         else:
             self.user_json = "null"
 
